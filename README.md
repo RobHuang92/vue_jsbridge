@@ -1,7 +1,7 @@
 # 原生APP与web交互
 
 
-####待增加内容
+###待增加内容
 * mescroll组件的上下刷新。
 * 画布的生成通用方法。
 * mint-ui的集成。
@@ -9,7 +9,7 @@
 * store的modules组件的增加。
 
 
-#####粗略整理了下原生app和web的交互
+###粗略整理了下原生app和web的交互
 
 web页面用vue的脚手架搭建。
 
@@ -24,7 +24,7 @@ Vue.prototype.JsBridge = JsBridge;
 
 在home.vue上做了demo的示例。
 
-##vue上的实现方式
+###vue上的实现方式
 
 ### 原生app调用js方法
 
@@ -56,7 +56,7 @@ params = {
 > `registerHandler`返回参数之一`callback`方法。web处理完业务逻辑后，如果有需要通知原生app，告诉其已经完成业务逻辑，可以通过该方法来回调给原生app。
 
 
-### js调用原生app方法
+###js调用原生app方法
 > 比如网页上点击了某个div，需要开始传递数据给原生app。
 
 ```
@@ -83,6 +83,6 @@ methods: {
 > 传递参数`callback`，原生app处理完逻辑后，可以在返回数据通知给前端，已经处理完毕，前端可以接受到一个状态。
 
 
-##iOS上的实现方式
+###iOS上的实现方式
 
 
