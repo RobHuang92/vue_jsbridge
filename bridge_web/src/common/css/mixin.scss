@@ -1,5 +1,5 @@
 // 主题颜色
-$theme_c: #3190e8;
+$theme_c: #f78ea8;
 // 背景色
 $bg_c: white;
 // 字体颜色
@@ -45,4 +45,19 @@ $tint_font_c: #e4e4e4;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+// 相对定位全屏
+@mixin pb {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+// 设置height和lint-height
+@mixin lh($height) {
+    height: $height;
+    line-height: $height;
 }

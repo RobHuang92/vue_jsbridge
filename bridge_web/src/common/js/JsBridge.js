@@ -3,12 +3,7 @@
  * */
 
 export default {
-    //提供给vue可以use的全局 JsBridge
-    install: (Vue) => {
-        Object.defineProperty(Vue.prototype, 'JsBridge', {
-            value: JsBridge
-        })
-    },
+
     //初始化bridge信息
     init: (callback) => {
         if (window.WebViewJavascriptBridge) {
@@ -66,5 +61,12 @@ export default {
                 }
             });
         });
+    },
+    // 向原生发送消息 
+    sendNavtive: function(obj, callback) {
+        this.callHandler({
+            fun: obj.fun,
+            data: obj.data
+        }.callback);
     }
 }

@@ -5,8 +5,10 @@
 </template>
 
 <script>
+
+
 export default {
-    name: 'App'
+    name: 'App',
 }
 </script>
 
@@ -15,8 +17,7 @@ export default {
     @import './common/css/mixin.scss';
     @import './common/css/mint.scss';
     #app{
-        width: 100%;
-        height: 100%;
+        @include pb;
     }
     body, html{
         background: $bg_c;

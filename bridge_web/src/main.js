@@ -35,6 +35,11 @@ Vue.use(VueLazyLoad, {
 import FastClick from 'fastclick';
 FastClick.attach(document.body);
 
+// 引用与app交互组件。并挂在vue的属性上
+import JsBridge from '@/common/js/JsBridge.js';
+Vue.prototype.JsBridge = JsBridge;
+
+
 
 Vue.config.productionTip = false;
 
