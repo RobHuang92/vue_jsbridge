@@ -1,11 +1,12 @@
 /**
  * JS与native交互桥梁
+ *  function 不能用箭头函数
  * */
 
 export default {
 
     //初始化bridge信息
-    init: (callback) => {
+    init: function(callback) {
         if (window.WebViewJavascriptBridge) {
             return callback(WebViewJavascriptBridge);
         } else {
@@ -25,18 +26,23 @@ export default {
         WVJBIframe.style.display = 'none';
         WVJBIframe.src = 'https://__bridge_loaded__';
         document.documentElement.appendChild(WVJBIframe);
-        setTimeout(() => {
+        setTimeout(function() {
             document.documentElement.removeChild(WVJBIframe)
         }, 0)
     },
-    registerHandler: (name, callback) => {
-        this.init((bridge) => {
-            bridge.registerHandler(name, (responseData, responseCallback) => {
+    // sendJsMessage 这个字段需要与原生app保持一致
+    registerHandler: function(callback, name = 'sendJsMessage') {
+        this.init(function(bridge) {
+            bridge.registerHandler(name, function(responseData, responseCallback) {
                 //如果存在callback函数，则需要返回出去
                 if (callback && typeof(callback) == 'function') {
-                    //判断是否是字符串,需要转为对象
-                    if (responseData && typeof(responseData) == "string") {
-                        responseData = JSON.parse(responseData);
+                    try {
+                        //判断是否是字符串,需要转为对象
+                        if (responseData && typeof(responseData) == "string") {
+                            responseData = JSON.parse(responseData);
+                        }
+                    } catch (error) {
+                        console.log(error);
                     }
                     callback(responseData, responseCallback);
                 }
@@ -51,11 +57,17 @@ export default {
                 data.data = JSON.stringify(data.data);
             }
             bridge.callHandler(data.fun, data.data, function(responseData) {
+                console.log(responseData);
+
                 //如果data存在callback函数，则需要返回出去
                 if (callback && typeof(callback) == 'function') {
                     //判断是否是字符串,需要转为对象
-                    if (responseData && typeof(responseData) == "string") {
-                        responseData = JSON.parse(responseData);
+                    try {
+                        if (responseData && typeof(responseData) == "string") {
+                            responseData = JSON.parse(responseData);
+                        }
+                    } catch (error) {
+                        console.log(error);
                     }
                     callback(responseData);
                 }
@@ -63,10 +75,10 @@ export default {
         });
     },
     // 向原生发送消息 
-    sendNavtive: function(obj, callback) {
+    sendNavtive: function(data, callback) {
         this.callHandler({
-            fun: obj.fun,
-            data: obj.data
-        }.callback);
+            fun: 'sendNavtiveMessage', //这个字段需要与原生保持一致
+            data: data
+        }, callback);
     }
 }

@@ -8,14 +8,27 @@
 <script>
 export default {
     mounted () {
-        console.log(this.JsBridge);
+        this.JsBridge.registerHandler((params, callback) => {
+            console.log(params);
+            
+            console.log(`=== ios => js`);
 
-        this.JsBridge.registerHandler()
-        
+            callback(`js已经接受到ios发送过来的消息`);
+        });
     },
     methods: {
         test() {
-
+            // js 向app调用方法
+            const params = {
+                fun: 'testName',
+                data: {
+                    'id': 100,
+                    'name': 'radish'
+                }
+            }
+            this.JsBridge.sendNavtive(params, (res) => {
+                console.log(res);
+            });
         }
     }
 }

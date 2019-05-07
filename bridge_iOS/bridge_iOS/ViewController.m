@@ -38,8 +38,12 @@
     [self createWKWebView];
     [self createProgress];
     
-    [self loadRequest:@"https://www.baidu.com"];
+    [self loadRequest:@"http://192.168.60.215:8080/#/home"];
     [self registerJSBridge];
+    
+    
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"radish",@"name",@"18",@"age",@"100",@"id", nil];
+    [self sendToWebWithName:@"sendJsMessage" parameter:dic];
     
 }
 
@@ -122,9 +126,17 @@
     [_bridge setWebViewDelegate:self];
     
     // web 调用iOS 的方法
-    [_bridge registerHandler:@"commonFun" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSLog(@" registerHandler === %@", data);
-        responseCallback(@"iOS已经接收到JS发来的请求");
+    [_bridge registerHandler:@"sendNavtiveMessage" handler:^(id data, WVJBResponseCallback responseCallback) {
+        if (data) {
+            NSDictionary *orginData = [self dictionaryWithJsonString:data];
+            // 根据方法名可以去调用iOS原生的方法
+            NSString *funName = orginData[@"fun"];
+            id params = orginData[@"data"];
+            
+        } else {
+            NSLog(@"传递数据为空");
+        }
+//        responseCallback(@"iOS已经接收到JS发来的请求");
     }];
 }
 
@@ -143,17 +155,59 @@
     }];
 }
 
-- (NSString *)createJsonWithDic:(NSDictionary *)dict{
-    if (!dict) { return nil; }
-    NSError *error = nil;
-    NSString *jsonString = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
-    if (jsonData && !error) {
-        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+// NSDictionary 和 NSString 互转换
+- (NSString *)createJsonWithDic:(id)dict{
+    if (!dict) {
+        NSLog(@"不能传入空字典");
+        return nil;
     }
-    return jsonString;
+    if ([dict isKindOfClass:[NSString class]]) {
+        NSLog(@"已经是json字符串");
+        return dict;
+    }
+    NSString *jsonString = nil;
+    @try {
+        NSError *error = nil;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+        if (jsonData && !error) {
+            NSLog(@"字段转换json成功");
+            jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        }
+        else{
+            NSLog(@"字典转换json失败 %@", error);
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"字典转化json字符串出错");
+    } @finally {
+        //这里一定执行，无论你异常与否
+        return jsonString;
+    }
 }
 
+- (NSDictionary *)dictionaryWithJsonString:(id)jsonString{
+    if (!jsonString) {
+        NSLog(@"不能传入空json字符串");
+        return nil;
+    }
+    if ([jsonString isKindOfClass:[NSDictionary class]]) {
+        NSLog(@"已经是字典");
+        return jsonString;
+    }
+    NSDictionary *dic = nil;
+    @try {
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *err;
+        dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
+        if(err) {
+            NSLog(@"json解析失败：%@",err);
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"字典转化json字符串出错");
+    } @finally {
+        //这里一定执行，无论你异常与否
+        return dic;
+    }
+}
 
 
 
