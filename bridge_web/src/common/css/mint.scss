@@ -1,0 +1,42 @@
+// mint-ui 专属配置文件
+.mint-popup {
+    background: transparent;
+}
+
+.v-modal {
+    opacity: 0.8;
+}
+
+
+/* 菊花转圈 设置成无限大的数据，保证菊花转圈在最顶层，这样防止按钮多次点击 */
+
+.mint-indicator-mask {
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.mint-indicator-wrapper {
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10001;
+}
+
+.picker-item {
+    font-size: .35rem;
+    color: #b4b4b4;
+}
+
+.picker-item.picker-selected {
+    color: #ff000b;
+}
+
+.mint-toast {
+    z-index: 10005;
+}
+
+.mint-toast-text {
+    font-size: .3rem;
+}
+
+.mint-indicator-text {
+    font-size: .35rem;
+}

@@ -1,0 +1,48 @@
+// 主题颜色
+$theme_c: #3190e8;
+// 背景色
+$bg_c: white;
+// 字体颜色
+$font_c: black;
+// 浅色字体
+$tint_font_c: #e4e4e4;
+// 设置圆角
+@mixin border_radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+//字体大小，颜色
+@mixin sc($size, $color) {
+    font-size: $size;
+    color: $color;
+}
+
+//宽高
+@mixin wh($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+// 宽高相等
+@mixin weh($width) {
+    $width: $width;
+    height: $width;
+}
+
+// flex水平垂直居中
+@mixin flc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// 背景图片地址和大小
+@mixin bsp {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
