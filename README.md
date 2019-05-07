@@ -1,5 +1,14 @@
 # 原生APP与web交互
 
+
+####待增加内容
+* mescroll组件的上下刷新。
+* 画布的生成通用方法。
+* mint-ui的集成。
+* axios的统一封装和抽离网络请求层。
+* store的modules组件的增加。
+
+
 #####粗略整理了下原生app和web的交互
 
 web页面用vue的脚手架搭建。
